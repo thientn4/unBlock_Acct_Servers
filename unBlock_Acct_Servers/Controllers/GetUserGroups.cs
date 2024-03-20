@@ -6,7 +6,9 @@ namespace unBlock_Acct_Servers.Controllers
     public class GetUserGroups : ControllerBase
     {
         [HttpGet("user/groups")]
-        public IActionResult LoginAzure(){
+        public IActionResult LoginAzure(
+            [FromHeader(Name = "email")] string? email // request header
+        ){
             return StatusCode(200, "hello");
         }
     }
