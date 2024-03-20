@@ -1,0 +1,6 @@
+@unBlock_Acct_Servers_HostAddress = http://localhost:5264
+
+GET {{unBlock_Acct_Servers_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
