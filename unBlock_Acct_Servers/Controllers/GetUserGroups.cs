@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using unBlock_Acct_Servers.Models;
+using unBlock_Acct_Servers.Models.Response;
 
 namespace unBlock_Acct_Servers.Controllers
 {
@@ -6,10 +8,10 @@ namespace unBlock_Acct_Servers.Controllers
     public class GetUserGroups : ControllerBase
     {
         [HttpGet("user/groups")]
-        public IActionResult LoginAzure(
+        public async Task<IActionResult> LoginAzureAsync(
             [FromHeader(Name = "email")] string? email // request header
         ){
-            return StatusCode(200, "hello");
+            return StatusCode(200, new GetUserGroupsRes("success", await Queries.GetUserGroups(email)));
         }
     }
 }

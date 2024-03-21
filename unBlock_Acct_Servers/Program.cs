@@ -91,6 +91,7 @@ app.Use(async (context, next) =>
             var E = PublicKeysFilter[0]["e"].ToString();
 
             ///////////////////// VALIDATE TOKEN WITH PUBLIC KEY ////////////////////////
+            //https://stackoverflow.com/questions/34403823/verifying-jwt-signed-with-the-rs256-algorithm-using-public-key-in-c-sharp
             RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
             rsa.ImportParameters(
               new RSAParameters()
