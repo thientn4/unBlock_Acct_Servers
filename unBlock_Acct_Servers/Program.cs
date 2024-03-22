@@ -63,11 +63,12 @@ app.Use(async (context, next) =>
     var Header = Request.Headers;
     var AuthType = Header["token"].ToString()[0];
     var Token = Header["token"].ToString().Substring(1);
-    try{
+    try
+    {
         JwtSecurityToken DecodedToken = (JwtSecurityToken)(new JwtSecurityTokenHandler().ReadToken(Token));
         var Payload = DecodedToken.Payload;
         var TokenHeader = DecodedToken.Header;
-        string Email = Payload["preferred_username"].ToString();
+        string Email = Payload["preferred_username"].ToString().ToLower();
         context.Request.Headers["email"] = Email;
 
         /////////////////////////////////// VERIFY TOKEN //////////////////////////////////////
@@ -121,7 +122,7 @@ app.Use(async (context, next) =>
     {
         // Reject invalid token
         context.Response.StatusCode = 200;
-        await context.Response.WriteAsync("An error occurred within the API gateway middleware. Please try again later.");
+        await context.Response.WriteAsync("invalid token");
     }
     else
     {
