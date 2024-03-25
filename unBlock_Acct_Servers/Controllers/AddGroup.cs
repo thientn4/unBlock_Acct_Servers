@@ -8,7 +8,7 @@ namespace unBlock_Acct_Servers.Controllers
     public class AddGroup : Controller
     {
         [HttpPost("add/group")]
-        public async Task<IActionResult> LoginAzureAsync(
+        public async Task<IActionResult> addGroup(
             [FromHeader(Name = "email")] string? email, // request header
             [FromBody] AddGroupBody body // request body
         )

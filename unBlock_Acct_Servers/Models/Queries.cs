@@ -86,5 +86,45 @@ namespace unBlock_Acct_Servers.Models
                 }
             }
         }
+        public static async Task<int> DeleteGroup(string GroupId, string OwnerEmail)
+        {
+            var effectedRows = 0;
+            using (var connection = new MySqlConnection("Server=localhost;Port=3306;Uid=root;Pwd=Ntmtrung1973@;Database=UNBLOCK"))
+            {
+                await connection.OpenAsync();
+                using (var command = new MySqlCommand($"CALL UNBLOCK.DELETE_GROUP(\"{OwnerEmail}\",\"{GroupId}\")", connection))
+                {
+                    try
+                    {
+                        effectedRows = command.ExecuteNonQuery();
+                    }
+                    catch (Exception)
+                    {
+                        effectedRows = 0;
+                    }
+                }
+            }
+            return effectedRows;
+        }
+        public static async Task<int> DeleteGroupMember(string GroupId, string Email)
+        {
+            var effectedRows = 0;
+            using (var connection = new MySqlConnection("Server=localhost;Port=3306;Uid=root;Pwd=Ntmtrung1973@;Database=UNBLOCK"))
+            {
+                await connection.OpenAsync();
+                using (var command = new MySqlCommand($"CALL UNBLOCK.DELETE_GROUP_MEMBER(\"{Email}\",\"{GroupId}\")", connection))
+                {
+                    try
+                    {
+                        effectedRows = command.ExecuteNonQuery();
+                    }
+                    catch (Exception)
+                    {
+                        effectedRows = 0;
+                    }
+                }
+            }
+            return effectedRows;
+        }
     }
 }
