@@ -9,7 +9,7 @@ namespace unBlock_Acct_Servers.Controllers
     {
         [HttpGet("user/groups")]
         public async Task<IActionResult> LoginAzureAsync(
-            [FromHeader(Name = "email")] string? email // request header
+            [FromHeader(Name = "email")] string email // request header
         ){
             return StatusCode(200, new GetUserGroupsRes("success", await Queries.GetUserGroups(email)));
         }

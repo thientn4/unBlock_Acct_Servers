@@ -10,9 +10,9 @@
             IsAdmin = inIsAdmin;
         }
         public string Id { get; set; }
-        public string? Name { get; set; }
-        public string? OwnerEmail { get; set; }
-        public bool ? IsAdmin { get; set; }
+        public string Name { get; set; }
+        public string OwnerEmail { get; set; }
+        public bool IsAdmin { get; set; }
 
     }
 }

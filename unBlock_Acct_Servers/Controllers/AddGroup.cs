@@ -9,7 +9,7 @@ namespace unBlock_Acct_Servers.Controllers
     {
         [HttpPost("add/group")]
         public async Task<IActionResult> addGroup(
-            [FromHeader(Name = "email")] string? email, // request header
+            [FromHeader(Name = "email")] string email, // request header
             [FromBody] AddGroupBody body // request body
         )
         {

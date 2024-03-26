@@ -2,10 +2,10 @@
 {
     public class AddGroupBody
     {
-        public string? Name { get; set; }
-        public List<string>? MemberEmails { get; set; }
-        public List<string>? AdminEmails { get; set; }
-        public List<string>? Tags { get; set; }
+        public required string Name { get; set; }
+        public required List<string> MemberEmails { get; set; }
+        public required List<string> AdminEmails { get; set; }
+        public required List<string> Tags { get; set; }
 
     }
 }
