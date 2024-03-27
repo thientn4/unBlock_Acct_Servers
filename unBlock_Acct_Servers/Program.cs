@@ -67,51 +67,14 @@ app.Use(async (context, next) =>
     {
         JwtSecurityToken DecodedToken = (JwtSecurityToken)(new JwtSecurityTokenHandler().ReadToken(Token));
         var Payload = DecodedToken.Payload;
-        var TokenHeader = DecodedToken.Header;
         string Email = Payload["preferred_username"].ToString().ToLower();
         context.Request.Headers["email"] = Email;
-
-        /////////////////////////////////// VERIFY TOKEN //////////////////////////////////////
+        string AppId = Payload["aud"].ToString();
         var IssuedAt = DecodedToken.IssuedAt;
-        var Now = DateTime.Now;
-        var HourDiff = IssuedAt.Subtract(Now).Hours;
-        if (HourDiff > 24)
-        {
-            Valid = false;
-        }
-        else
-        {
-            /////////////////////////// SEARCH FOR PUBLIC KEY ////////////////////////////
-            var TokenKid = TokenHeader["kid"]; //key id to search for Microsoft's public key
-            var response = await new HttpClient().GetAsync("https://login.microsoftonline.com/common/discovery/keys?appid=b05a8050-78a7-4a57-bd62-fe28df281cfd");
-            var strContent = await response.Content.ReadAsStringAsync();
-            JObject jsonContent = JObject.Parse(strContent);
-            JArray PublicKeys = (JArray)jsonContent["keys"];
-            JObject[] PublicKeysFilter = PublicKeys.Where(o => ((string)o["kid"]).Equals(TokenKid)).Select(o => (JObject)o).ToArray();
-            var N = PublicKeysFilter[0]["n"].ToString();
-            var E = PublicKeysFilter[0]["e"].ToString();
-
-            ///////////////////// VALIDATE TOKEN WITH PUBLIC KEY ////////////////////////
-            //https://stackoverflow.com/questions/34403823/verifying-jwt-signed-with-the-rs256-algorithm-using-public-key-in-c-sharp
-            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-            rsa.ImportParameters(
-              new RSAParameters()
-              {
-                  Modulus = FromBase64Url(N),
-                  Exponent = FromBase64Url(E)
-              }
-            );
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var validationParameters = new TokenValidationParameters()
-            {
-                ValidateLifetime = false, // Because there is no expiration in the generated token
-                ValidateAudience = false, // Because there is no audiance in the generated token
-                ValidateIssuer = false,   // Because there is no issuer in the generated token
-                IssuerSigningKey = new RsaSecurityKey(rsa)
-            };
-            SecurityToken validatedToken;
-            IPrincipal principal = tokenHandler.ValidateToken(Token, validationParameters, out validatedToken);
-        }
+        Valid = (
+            IssuedAt.Subtract(DateTime.Now).Hours <= 24 &&
+            AppId == "b05a8050-78a7-4a57-bd62-fe28df281cfd"
+        );
     }
     catch (Exception)
     {
