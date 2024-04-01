@@ -72,7 +72,7 @@ app.Use(async (context, next) =>
         string AppId = Payload["aud"].ToString();
         var IssuedAt = DecodedToken.IssuedAt;
         Valid = (
-            IssuedAt.Subtract(DateTime.Now).Hours <= 24 &&
+            DateTime.Now.Subtract(IssuedAt).TotalHours <= 24 &&
             AppId == "b05a8050-78a7-4a57-bd62-fe28df281cfd"
         );
     }
