@@ -13,23 +13,23 @@ namespace unBlock_Acct_Servers.Controllers
             [FromBody] AddGroupBody body // request body
         )
         {
-            int effectedRows = await Queries.AddGroup(body.Name,email);
-            if(effectedRows <= 0) return StatusCode(200, "failed");
+            int id = await Queries.AddGroup(body.Name,email);
+            if(id <= 0) return StatusCode(200, "failed");
             for(int i=0; i<body.MemberEmails.Count; i++)
             {
                 string MemberEmail = body.MemberEmails[i];
-                Queries.AddGroupMember(MemberEmail, body.Name + email, false);
+                Queries.AddGroupMember(MemberEmail, id, false);
             }
             for (int i = 0; i < body.AdminEmails.Count; i++)
             {
                 string AdminEmail = body.AdminEmails[i];
-                Queries.AddGroupMember(AdminEmail, body.Name + email, true);
+                Queries.AddGroupMember(AdminEmail, id, true);
 
             }
             for (int i = 0; i < body.Tags.Count; i++)
             {
                 string Tag = body.Tags[i];
-                Queries.AddGroupTag(body.Name + email, Tag);
+                Queries.AddGroupTag(id, Tag);
             }
             return StatusCode(200, "success");
 

@@ -10,7 +10,7 @@ namespace unBlock_Acct_Servers.Controllers
         [HttpPost("remove/group")]
         public async Task<IActionResult> removeGroup(
             [FromHeader(Name = "email")] string email, // request header
-            [FromQuery(Name = "groupId")] string groupId // request url query parameter
+            [FromQuery(Name = "groupId")] int groupId // request url query parameter
         )
         {
 
