@@ -30,6 +30,28 @@ namespace unBlock_Acct_Servers.Models
             }
             return results;
         }
+        public static async Task<List<Member>> GetGroupMembers(int groupId)
+        {
+            List<Member> results = new List<Member>();
+            using (var connection = new MySqlConnection("Server=localhost;Port=3306;Uid=root;Pwd=Ntmtrung1973@;Database=UNBLOCK"))
+            {
+                await connection.OpenAsync();
+
+                using (var command = new MySqlCommand($"SELECT * FROM UNBLOCK.MEMBERSHIP WHERE GROUP_ID = {groupId}", connection))
+                {
+                    var reader = await command.ExecuteReaderAsync();
+
+                    while (await reader.ReadAsync())
+                    {
+                        int id = reader.GetInt32(1);
+                        string email = reader.GetString(0);
+                        bool isAdmin = reader.GetBoolean(2);
+                        results.Add(new Member(id,email,isAdmin));
+                    }
+                }
+            }
+            return results;
+        }
         public static async Task<int> AddGroup(string Name, string OwnerEmail)
         {
             using (var connection = new MySqlConnection("Server=localhost;Port=3306;Uid=root;Pwd=Ntmtrung1973@;Database=UNBLOCK"))
@@ -42,6 +64,24 @@ namespace unBlock_Acct_Servers.Models
                         var reader = await command.ExecuteReaderAsync();
                         await reader.ReadAsync();
                         return reader.GetInt32(0);
+                    }
+                    catch (Exception)
+                    {
+                        return -1;
+                    }
+                }
+            }
+        }
+        public static async Task<int> EditGroup(string Name, int GroupId)
+        {
+            using (var connection = new MySqlConnection("Server=localhost;Port=3306;Uid=root;Pwd=Ntmtrung1973@;Database=UNBLOCK"))
+            {
+                await connection.OpenAsync();
+                using (var command = new MySqlCommand($"CALL UNBLOCK.EDIT_GROUP(\"{Name}\",{GroupId})", connection))
+                {
+                    try
+                    {
+                        return command.ExecuteNonQuery();
                     }
                     catch (Exception)
                     {
