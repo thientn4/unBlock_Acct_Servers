@@ -9,11 +9,12 @@ namespace unBlock_Acct_Servers.Controllers
     {
         [HttpPost("edit/group")]
         public async Task<IActionResult> addGroup(
+            [FromHeader(Name = "email")] string email, // request header
             [FromQuery(Name = "groupId")] int groupId, // request url query parameter
             [FromBody] AddGroupBody body // request body
         )
         {
-            int effectedRows = await Queries.EditGroup(body.Name, groupId);
+            int effectedRows = await Queries.EditGroup(body.Name, groupId, email);
             if (effectedRows <= 0) return StatusCode(200, "failed");
             for (int i = 0; i < body.MemberEmails.Count; i++)
             {

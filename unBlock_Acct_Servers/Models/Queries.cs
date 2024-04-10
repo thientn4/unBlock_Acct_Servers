@@ -72,12 +72,12 @@ namespace unBlock_Acct_Servers.Models
                 }
             }
         }
-        public static async Task<int> EditGroup(string Name, int GroupId)
+        public static async Task<int> EditGroup(string Name, int GroupId, string Email)
         {
             using (var connection = new MySqlConnection("Server=localhost;Port=3306;Uid=root;Pwd=Ntmtrung1973@;Database=UNBLOCK"))
             {
                 await connection.OpenAsync();
-                using (var command = new MySqlCommand($"CALL UNBLOCK.EDIT_GROUP(\"{Name}\",{GroupId})", connection))
+                using (var command = new MySqlCommand($"CALL UNBLOCK.EDIT_GROUP(\"{Name}\",{GroupId},\"{Email}\")", connection))
                 {
                     try
                     {
