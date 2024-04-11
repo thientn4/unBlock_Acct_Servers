@@ -67,13 +67,13 @@ app.Use(async (context, next) =>
     {
         JwtSecurityToken DecodedToken = (JwtSecurityToken)(new JwtSecurityTokenHandler().ReadToken(Token));
         var Payload = DecodedToken.Payload;
-        string Email = Payload["preferred_username"].ToString().ToLower();
+        string Email = Payload[AuthType=='A'?"preferred_username":"email"].ToString().ToLower();
         context.Request.Headers["email"] = Email;
         string AppId = Payload["aud"].ToString();
         var IssuedAt = DecodedToken.IssuedAt;
         Valid = (
-            DateTime.Now.Subtract(IssuedAt).TotalHours <= 24 &&
-            AppId == "b05a8050-78a7-4a57-bd62-fe28df281cfd"
+            DateTime.Now.Subtract(IssuedAt).TotalHours <= 24
+            && AppId == (AuthType == 'A' ? "b05a8050-78a7-4a57-bd62-fe28df281cfd" : "823391589443-hh66v8666cqpklh4ubn6pcdntma3r5pi.apps.googleusercontent.com")
         );
     }
     catch (Exception)

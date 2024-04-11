@@ -8,12 +8,14 @@ namespace unBlock_Acct_Servers.Models.Response
         {
             this.Status = "failed";
         }
-        public GetUserGroupsRes(string inStatus, List<Group> inGroups)
+        public GetUserGroupsRes(string inStatus, string inEmail, List<Group> inGroups)
         {
             this.Status = inStatus;
             this.Groups = inGroups;
+            this.Email = inEmail;
         }
         public string? Status { get; set; }
+        public string? Email { get; set; }
         public List<Group>? Groups { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace unBlock_Acct_Servers.Controllers
         public async Task<IActionResult> LoginAzureAsync(
             [FromHeader(Name = "email")] string email // request header
         ){
-            return StatusCode(200, new GetUserGroupsRes("success", await Queries.GetUserGroups(email)));
+            return StatusCode(200, new GetUserGroupsRes("success", email, await Queries.GetUserGroups(email)));
         }
     }
 }
